@@ -1,0 +1,197 @@
+﻿@model IEnumerable<Movies>
+
+@{
+    ViewData["Title"] = "Movies | Movie Web";
+    Layout = "_Layout"; // Assuming you have a main layout for consistent styling
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/lib/css/bootstrap.css" />
+    <link href="~/css/Styles.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #141414;
+            color: #ffffff;
+        }
+
+        .container {
+            padding: 2rem;
+        }
+
+        .alert {
+            margin-bottom: 1rem;
+        }
+
+        .movie-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #1e1e1e;
+            margin-bottom: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-info {
+            padding: 1rem;
+            text-align: center;
+            color: #f1f1f1;
+        }
+
+        .btn-info {
+            background-color: #e50914;
+            border: none;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-info:hover {
+            background-color: #d40713;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+        }
+
+        .release-genre {
+            font-size: 0.85rem;
+            color: #bbb;
+        }
+
+        .action-buttons {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <main role="main">
+        <div class="container">
+            <h1 class="text-center">Movie Application</h1>
+            <p class="lead text-center text-muted">Download & Comment on Movies!</p>
+
+            <div class="text-center mb-4">
+                <a asp-controller="Movies" asp-action="Create" class="btn btn-info my-2">Add Movie</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-info my-2">Sign Out</a>
+            </div>
+
+            <!-- Filter Section -->
+    <form asp-controller="Movies" asp-action="Index" method="get" class="mb-4">
+        <div class="form-row">
+            <div class="col-md-4">
+                <input type="text" name="title" class="form-control" placeholder="Search by Title" value="@ViewData["CurrentTitle"]" />
+            </div>
+            <div class="col-md-3">
+                        <select name="genre" class="form-control" asp-items="Html.GetEnumSelectList<Genre>()">
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="number" name="rating" class="form-control" placeholder="Min Rating (0-5)" min="0" max="5" step="0.1" value="@ViewData["CurrentRating"]" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info btn-block">Filter</button>
+            </div>
+        </div>
+    </form>
+
+            <div id="alert" class="text-center">
+                @if (TempData["MovieUploaded"] != null)
+                {
+                    <div class="alert alert-success">@TempData["MovieUploaded"]</div>
+                }
+                @if (TempData["Updated"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Updated"]</div>
+                }
+                @if (TempData["NoFile"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["NoFile"]</div>
+                }
+                @if (TempData["Created"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Created"]</div>
+                }
+            </div>
+
+            <div class="row">
+                @foreach (var m in Model)
+                {
+                    <div class="col-md-4">
+                        <div class="movie-card">
+                            <img class="card-img-top" src="@m.ImageUrl" alt="@m.Title" style="max-height: 20px max-width: 20px;">
+                            <div class="movie-info">
+                                <h5 class="card-title">
+                                    @if (string.IsNullOrWhiteSpace(m.Title))
+                                    {
+                                        @:No Title Available
+                                    }
+                                    else
+                                    {
+                                        @m.Title
+                                    }
+                                </h5>
+                                <small class="release-genre">
+                                    @if (m.Rating == 0)
+                                    {
+                                        @:No Rating Available
+                                    }
+                                    else
+                                    {
+                                        @m.Rating.ToString("0/5")
+                                    }
+                                    <span> | Release: @m.ReleaseDate.Year</span>
+                                    <span> | Genre: @m.Genre</span>
+                                </small>
+                                <p class="card-text">
+                                    @if (string.IsNullOrWhiteSpace(m.Description))
+                                    {
+                                        @:No Description Available
+                                    }
+                                    else
+                                    {
+                                        @m.Substring(m.Description)
+                                    }
+                                </p>
+                                <div class="action-buttons">
+                                    <a class="btn btn-info btn-sm" asp-controller="Movies" asp-action="Details" asp-route-id="@m.MovieID">View Movie/Details</a>
+                                    <a class="btn btn-info btn-sm" asp-controller="Movies" asp-action="Edit" asp-route-id="@m.MovieID">Edit</a>
+                                    <form asp-action="Delete" asp-controller="Movies" method="post" style="display:inline;">
+                                        <input type="hidden" name="MovieID" value="@m.MovieID" />
+                                        <button type="submit" class="btn btn-info btn-sm">Delete</button>
+                                    </form>
+                                    <a class="btn btn-info btn-sm" href="@m.S3URI" download>Download Trailer</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        setTimeout(function () {
+            $('#alert').fadeOut('slow');
+        }, 3000);
+    </script>
+</body>
+</html>

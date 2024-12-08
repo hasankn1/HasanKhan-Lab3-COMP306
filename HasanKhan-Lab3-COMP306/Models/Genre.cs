@@ -1,0 +1,7 @@
+﻿namespace HasanKhan_Lab3_COMP306.Models
+{
+    public enum Genre
+    {
+        UNKNOWN, ANIMATION, ACTION, DRAMA, FANTASY, COMEDY, SCIENCE_FICTION, HORROR, ROMANCE, CRIME, ADVENTURE, THRILLER
+    }
+}

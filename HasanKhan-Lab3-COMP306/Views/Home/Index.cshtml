@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Movie Web | Movie Index";
+    Layout = "_Layout";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Movie Web | Movie Index</title>
+    <link rel="stylesheet" href="/lib/css/bootstrap.css" />
+    <link href="~/css/Styles.css" rel="stylesheet" />
+
+    <style>
+        /* General styling */
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Movie Grid */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 2rem;
+        }
+
+        .movie-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+            .movie-card img {
+                width: 100%;
+                height: auto;
+                transition: transform 0.3s;
+            }
+
+            .movie-card:hover img {
+                transform: scale(1.05);
+            }
+
+        .movie-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            text-align: center;
+        }
+
+        /* Banner Buttons */
+        .banner-buttons a {
+            margin: 0.5rem;
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-watch {
+            background-color: #e50914;
+            color: #fff;
+        }
+
+        .btn-more-info {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <main role="main">
+
+        <!-- Buttons Section -->
+        <section class="banner-buttons" style="text-align:center; padding: 2rem;">
+            <a href="~/Users/Signin" class="btn-watch">Watch Now</a>
+            <a href="~/Users/Signup" class="btn-more-info">Sign Up</a>
+        </section>
+
+        <!-- Movie Grid Section -->
+        <section class="movie-grid">
+            <!-- Example Movie Cards -->
+            <div class="movie-card">
+                <img src="https://m.media-amazon.com/images/M/MV5BNTFiNzBlYmEtMTcxZS00ZTEyLWJmYmQtMjYzYjAxNGQwODAzXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg" alt="Venom">
+                <div class="movie-info">Eddie Brock is still struggling to coexist with the shape-shifting extraterrestrial Venom.</div>
+            </div>
+            <div class="movie-card">
+                <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRqGlJ1E_dsszf-lreRdhk3LiSe9gK1SBzNnw63UIxXiyveYR4I" alt="Greyhound">
+                <div class="movie-info">U.S. Navy Cmdr. Ernest Krause is assigned to lead an Allied convoy across the Atlantic during World War II, pursued by German U-boats.</div>
+            </div>
+            <div class="movie-card">
+                <img src="https://m.media-amazon.com/images/M/MV5BYzg0NGM2NjAtNmIxOC00MDJmLTg5ZmYtYzM0MTE4NWE2NzlhXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg" alt="Tenet">
+                <div class="movie-info">When objects that can be manipulated and used as weapons in the future fall into the wrong hands, a CIA operative known as the Protagonist must save the world.</div>
+            </div>
+            <!-- Add more movie cards later -->
+        </section>
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+</body>
+</html>

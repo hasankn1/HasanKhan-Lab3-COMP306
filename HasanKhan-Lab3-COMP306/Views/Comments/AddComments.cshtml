@@ -1,0 +1,59 @@
+﻿@model Movies
+
+@{ ViewData["Title"] = "Movie Web | Add Comment";
+    Layout = "_Layout"; }
+
+<h1 class="text-center">Add Comments</h1>
+
+<h4 class="text-center">Comments</h4>
+
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h2>
+            @if (TempData["Title"] != null)
+            {@TempData["Title"]}
+        </h2>
+    </div>
+</section>
+
+<div class="album py-5 bg-light">
+    <div class="container col-md-6">
+        <form asp-controller="Comments" asp-action="AddComment" method="post">
+            <input type="hidden" asp-for="@Model.MovieID" />
+            <input type="hidden" asp-for="@Model.Comments" />
+            <br />
+            <h3>Write a comment</h3>
+
+            <div class="form-group">
+                <label asp-for="@Model.Rating">Rating</label>
+                    <div class="form-group">
+                        1
+                    @Html.RadioButtonFor(model => model.Rating, 1)
+                        2
+                    @Html.RadioButtonFor(model => model.Rating, 2)
+                        3
+                    @Html.RadioButtonFor(model => model.Rating, 3)
+                        4
+                    @Html.RadioButtonFor(model => model.Rating, 4)
+                        5
+                    @Html.RadioButtonFor(model => model.Rating, 5)
+                    </div>
+                    <span asp-validation-for="@Model.Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Title">Title</label>
+                <input type="text" class="form-control" asp-for="@Model.Title" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Comments">Comments</label>
+                <textarea type="text" class="form-control" asp-for="@Model.Comments" rows="5"></textarea>
+            </div>
+            <br />
+            <div class="text-center">
+                <a asp-action="Index" asp-controller="Movies"  class="btn btn-outline-danger my-2">Back to movies</a>
+                <button type="submit" class="btn btn-danger my-2">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

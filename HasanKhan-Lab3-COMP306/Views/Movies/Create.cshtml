@@ -1,0 +1,118 @@
+﻿@model Movies
+
+@{
+    ViewData["Title"] = "Upload Movie";
+    Layout = "_Layout";
+}
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h2>Upload Movie</h2>
+    </div>
+</section>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form id="movieForm" asp-action="Create" asp-controller="Movies" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <input type="text" class="form-control" asp-for="Title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ReleaseDate" class="form-label">Year</label>
+                    <input type="date" class="form-control" asp-for="ReleaseDate" />
+                    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Director" class="form-label">Director</label>
+                    <input type="text" class="form-control" asp-for="Director" />
+                    <span asp-validation-for="Director" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Genre" class="form-label">Genre</label>
+                    <select class="form-control" asp-for="Genre" asp-items="Html.GetEnumSelectList<Genre>()">
+                        <option value="">Choose a Genre</option>
+                    </select>
+                    <span asp-validation-for="Genre" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Rating" class="form-label">Rating (0.0 to 5.0)</label>
+                    <input type="number" class="form-control" asp-for="Rating" step="0.1" min="0" max="5" />
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Image Upload:</label>
+                    <input type="file" class="form-control" name="imageFile" id="imageFile" accept="image/*" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Movie File:</label>
+                    <input type="file" class="form-control" name="movieFile" id="movieFile" />
+                    <span asp-validation-for="S3URI" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="S3URI" id="S3URI" />
+
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea class="form-control" asp-for="Description" rows="5"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">Back to Movies</a>
+                    <button type="button" id="uploadButton" class="btn btn-warning">Upload File to S3</button>
+                    <button type="submit" class="btn btn-primary">Add Movie</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById("uploadButton").addEventListener("click", async () => {
+            const formData = new FormData();
+            const movieFile = document.getElementById("movieFile").files[0];
+            if (!movieFile) {
+                alert("Please select a file to upload.");
+                return;
+            }
+            //console.log(files);
+            //console.log(files[0]);
+            console.log("movieFile:", movieFile);
+
+            formData.append("movieFile", movieFile);
+            console.log("formData:", formData);
+            console.log("formData.append:", formData.append);
+            console.log("formData.appened entireies:", [...formData.entries()]);
+
+            // Perform the AJAX request to upload the file to S3
+            const response = await fetch('@Url.Action("Create", "Movies")', {
+                method: 'POST',
+                body: formData, movieFile
+            });
+            console.log("response:", response);
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("S3URI").value = data.S3URI; // Ensure key matches
+                alert("File uploaded successfully!");
+            } else {
+                alert("Failed to upload file.");
+            }
+
+        });
+    </script>
+}
