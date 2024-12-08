@@ -66,10 +66,10 @@ Parameter Store:
 ## 🖼️ Screenshots
 
 Home Page:
-![Screenshot 2024-12-08 130927](https://github.com/user-attachments/assets/a92c8f9b-4733-4fd4-986f-4618402f9573)
+![Screenshot 2024-12-08 130927](https://github.com/user-attachments/assets/1b3b3ea6-0afe-4fbe-b21a-0060634aae27)
 
 Sign In Page:
-![Screenshot 2024-12-08 130933](https://github.com/user-attachments/assets/b397f00f-93d1-43cf-a697-3ba019329157)
+![Screenshot 2024-12-08 130933](https://github.com/user-attachments/assets/d837b6cb-48ee-43aa-bd7f-bca71a5fc0be)
 
 ## 📜 License
 
